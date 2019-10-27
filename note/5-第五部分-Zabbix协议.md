@@ -1,4 +1,4 @@
-## Zabbix自定义监控
+## Zabbix 协议
 
 某些场合下，我们更希望使用自己开发的客户端，即在自己的业务程序中内嵌 Zabbix 客户端，用自己写的客户端发送数据给 Zabbix-Server。Zabbix-Agent 和 Zabbix-Server 之间的通信是采用 Zabbix 协议来实现的。因此，我们完全可以写一个 Zabbix-Sender 内置到业务程序中，从而避免在系统中安装 Zabbix 官方提供的客户端程序。
 
@@ -14,9 +14,15 @@ Zabbix 协议是 Zabbix 各程序间通信的准则，如下展示了各模块�
 
 在Zabbix 各个程序间通信中，其协议传输数据的格式为 JSON。
 
-### Zabbix=Sender 协议
+### Zabbix-Sender 协议
 
 
+
+### Zabbix-Get 协议
+
+
+
+### Zabbix-Agent协议
 
 zabbix agent的运行模式有以下两种：
 
