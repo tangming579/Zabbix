@@ -31,3 +31,34 @@ zabbix agent的运行模式有以下两种：
 
 相关文档：[被动和主动代理检查](<https://www.zabbix.com/documentation/3.4/zh/manual/appendix/items/activepassive>)
 
+**被动方式**
+
+zabbix-server和zabbix-agent之间的通信是zabbix的专用协议，数据格式为JSON。默认情况下，zabbix-agent工作在被动模式下，工作的模式是由Key和zabbix_agentd.conf参数配置决定的。
+
+被动模式的流程如下：
+
+- Server打开一个TCP连接。
+- Server发送一个key为agent.ping\n。
+- Agent接收到这个请求，然后响应数据<HEADER><DATALEN>1.
+- Server对接收到的数据进行处理。
+- TCP连接关闭。
+
+客户端的配置：/etc/zabbix/zabbix_agentd.conf配置文件中设置ServerActive=192.168.1.103（这个IP可以是server也可以是proxy的IP地址），然后重启zabbix_agentd服务。
+
+　　服务端的配置：服务器端items的检测方式（Type）修改为Zabbix agent(active)
+
+**主动方式的请求周期**
+
+- Agent向Server建立一个TCP的连接。
+- Agent请求需要检测的数据列表。
+- Server响应Agent，发送一个Items列表（item key、delay）。
+- Agent响应请求。
+- TCP连接完成本次会话后关闭。
+- Agent开始周期性的收集数据。
+
+Agent要向Server发送数据：
+
+- Agent向Server建立一个TCP连接。
+- Agent发送在采集周期内，需要采集数据给Server.
+- Server处理Agent发送的数据。
+- TCP连接关闭。
