@@ -38,13 +38,14 @@ namespace CSharpAPIDemo
             zabbixParam.jParams = objParams;
             zabbixParam.Callback = (result) =>
             {
-                txbResult.Text = result.result + "";
+                txbResult.Text = result.resultTotal + "";
                 WebClientManager.Token = result.result + "";
                 if (string.IsNullOrEmpty(WebClientManager.Token))
                     MessageBox.Show("登录失败！");
                 else
                 {
                     btnLogin.Content = "已登录";
+                    staCtl.IsEnabled = true;
                 }
             };
 
@@ -65,7 +66,37 @@ namespace CSharpAPIDemo
             zabbixParam.jParams = objParams;
             zabbixParam.Callback = (result) =>
             {
-                txbResult.Text = result.result + "";
+                txbResult.Text = result.resultTotal + "";
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
+        }
+
+        //获取历史数据，参考：https://www.zabbix.com/documentation/3.4/zh/manual/api/reference/history/get
+        private void BtnGetHistory_Click(object sender, RoutedEventArgs e)
+        {
+            var objParams = new JObject();
+
+            objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+            objParams["history"] = 0;
+            //要返回的历史对象类型
+            //  0 - numeric float; 数字浮点数
+            //  1 - character; 字符
+            //  2 - log; 日志
+            //  3 - numeric unsigned; 数字符号
+            //  4 - text.文本
+
+            objParams["itemids"] = "23296";
+            objParams["sortfield"] = "clock";//按什么排序，可能的值为：itemid和clock
+            objParams["sortorder"] = "DESC";
+            objParams["limit"] = 10;
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "history.get";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.resultTotal + "";
             };
 
             WebClientManager.GetZabbixData(zabbixParam);
