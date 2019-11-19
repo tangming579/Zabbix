@@ -23,6 +23,7 @@
         <StackPanel x:Name="staCtl" IsEnabled="False" Margin="10,102,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Button x:Name="btnGetHost" Content="获取所有host" HorizontalAlignment="Left" Width="95" Click="BtnGetHost_Click"/>
             <Button x:Name="btnGetHistory" Content="获取历史数据" HorizontalAlignment="Left" Margin="0,25,0,0" VerticalAlignment="Top" Width="95" Click="BtnGetHistory_Click"/>
+            <Button x:Name="btnGetItem" Content="获取项数据" HorizontalAlignment="Left" Margin="0,25,0,0" VerticalAlignment="Top" Width="95" Click="BtnGetItem_Click"/>
         </StackPanel>
         
 

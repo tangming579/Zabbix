@@ -101,5 +101,28 @@ namespace CSharpAPIDemo
 
             WebClientManager.GetZabbixData(zabbixParam);
         }
+
+        private void BtnGetItem_Click(object sender, RoutedEventArgs e)
+        {
+            var objParams = new JObject();
+            var search = new JObject();
+            search["key_"] = "system";
+            search["name"] = "Context switches per second";
+
+            objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+            objParams["hostids"] = "10269";
+            objParams["search"] = search;
+            objParams["sortfield"] = "name";//按什么排序
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "item.get";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.resultTotal + "";
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
+        }
     }
 }
