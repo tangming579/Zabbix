@@ -26,11 +26,49 @@ namespace CSharpAPIDemo
             InitializeComponent();
         }
 
-        
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        //登录
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            Login();
+            var objParams = new JObject();
+            objParams["user"] = txbUser.Text;
+            objParams["password"] = txbPassword.Text;
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "user.login";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.result + "";
+                WebClientManager.Token = result.result + "";
+                if (string.IsNullOrEmpty(WebClientManager.Token))
+                    MessageBox.Show("登录失败！");
+                else
+                {
+                    btnLogin.Content = "已登录";
+                }
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
+        }
+        //检索主机
+        private void BtnGetHost_Click(object sender, RoutedEventArgs e)
+        {
+            var objParams = new JObject();
+            var output = new JArray() { "hostid", "host" };
+            var selectInterfaces = new JArray() { "interfaceid", "ip" };
+
+            objParams["output"] = output;
+            objParams["selectInterfaces"] = selectInterfaces;
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "host.get";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.result + "";
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
         }
     }
 }

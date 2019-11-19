@@ -11,50 +11,29 @@ namespace CSharpAPIDemo
 {
     public static class WebClientManager
     {
-        public static string Token { private set; get; }
+        public static string Token { set; get; }
 
-        #region API
-
-        public static PostResult Login(string user, string password)
-        {
-            var objParams = new JObject();
-            objParams["user"] = user;
-            objParams["password"] = password;
-
-            PostResult postResult = GetZabbixData("user.login", objParams);
-
-            postResult.Callback = (result) =>
-               {
-                   Token = result.result + "";
-               };
-            return postResult;
-        }
-
-
-        #endregion
-
-        public static PostResult GetZabbixData(string method, JObject jParams)
+        public static void GetZabbixData(ZabbixParam zabbixParam)
         {
             JObject obj = new JObject();
             obj["jsonrpc"] = "2.0";
-            obj["method"] = method;
+            obj["method"] = zabbixParam.method;
             obj["id"] = 1;
-            obj["auth"] = null;
-            obj["params"] = jParams;
-            obj["token"] = Token;
+            obj["auth"] = Token;
+            obj["params"] = zabbixParam.jParams;
 
-            var postResult = new PostResult() { method = method };
+            var postResult = new ZabbixParam() { method = zabbixParam.method };
 
             GetZabbixData(obj + "", (str) =>
                {
                    var jResult = JObject.Parse(str);
-                   var result = new zabbixResult();
+                   var result = new ZabbixResult();
                    result.id = int.Parse(jResult["id"] + "");
                    result.jsonrpc = jResult["jsonrpc"] + "";
                    result.result = jResult["result"];
-                   postResult.Callback?.Invoke(result);
+                   result.resultTotal = jResult;
+                   zabbixParam.Callback?.Invoke(result);
                });
-            return postResult;
         }
 
         public static void GetZabbixData(string jsonStr, Action<string> callback)
@@ -88,17 +67,20 @@ namespace CSharpAPIDemo
         }
     }
 
-    public class PostResult
+    public class ZabbixParam
     {
         public string method { get; set; }
-        public Action<zabbixResult> Callback { get; set; }
+        public JToken jParams { get; set; }
+        public Action<ZabbixResult> Callback { get; set; }
     }
 
-    public class zabbixResult
+    public class ZabbixResult
     {
         public string jsonrpc { get; set; }
 
         public JToken result { get; set; }
+
+        public JObject resultTotal { get; set; }
 
         public int id { get; set; }
     }

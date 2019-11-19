@@ -7,7 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="305,150,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBlock Text="用户名：" Width="50"></TextBlock>
+                <TextBox x:Name="txbUser" Text="Admin" Width="80"></TextBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <TextBlock Text="密码：" Width="50"></TextBlock>
+                <TextBox x:Name="txbPassword" Text="zabbix" Width="80"></TextBox>
+            </StackPanel>
+        </StackPanel>
+        <Button x:Name="btnLogin" Content="登录" HorizontalAlignment="Left" Margin="65,58,0,0" VerticalAlignment="Top" Width="75" Click="btnLogin_Click"/>
+        <Grid HorizontalAlignment="Left" Height="100" Margin="-61,413,0,-94" VerticalAlignment="Top" Width="100"/>
+        <Button x:Name="btnGetHost" Content="获取所有host" HorizontalAlignment="Left" Margin="10,102,0,0" VerticalAlignment="Top" Width="95" Click="BtnGetHost_Click"/>
+        <TextBox x:Name="txbResult" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="399" Margin="342,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="440"/>
 
     </Grid>
 </Window>
