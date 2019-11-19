@@ -106,7 +106,7 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             var search = new JObject();
-            search["key_"] = "system";
+            search["key_"] = "system";//key中包含什么字符串
             search["name"] = "Context switches per second";
 
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
@@ -116,6 +116,40 @@ namespace CSharpAPIDemo
 
             ZabbixParam zabbixParam = new ZabbixParam();
             zabbixParam.method = "item.get";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.resultTotal + "";
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
+        }
+
+        private void BtnGetProblem_Click(object sender, RoutedEventArgs e)
+        {
+            var objParams = new JObject();
+            objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+            objParams["hostids"] = "10269";
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "problem.get";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.resultTotal + "";
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
+        }
+
+        private void BtnGetAlert_Click(object sender, RoutedEventArgs e)
+        {
+            var objParams = new JObject();
+            objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+            objParams["hostids"] = "10269";
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "alert.get";
             zabbixParam.jParams = objParams;
             zabbixParam.Callback = (result) =>
             {
