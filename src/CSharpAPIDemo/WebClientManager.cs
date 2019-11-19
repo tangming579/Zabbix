@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -10,7 +11,53 @@ namespace CSharpAPIDemo
 {
     public static class WebClientManager
     {
-        public static void GetData(string jsonStr)
+        public static string Token { private set; get; }
+
+        #region API
+
+        public static PostResult Login(string user, string password)
+        {
+            var objParams = new JObject();
+            objParams["user"] = user;
+            objParams["password"] = password;
+
+            PostResult postResult = GetZabbixData("user.login", objParams);
+
+            postResult.Callback = (result) =>
+               {
+                   Token = result.result + "";
+               };
+            return postResult;
+        }
+
+
+        #endregion
+
+        public static PostResult GetZabbixData(string method, JObject jParams)
+        {
+            JObject obj = new JObject();
+            obj["jsonrpc"] = "2.0";
+            obj["method"] = method;
+            obj["id"] = 1;
+            obj["auth"] = null;
+            obj["params"] = jParams;
+            obj["token"] = Token;
+
+            var postResult = new PostResult() { method = method };
+
+            GetZabbixData(obj + "", (str) =>
+               {
+                   var jResult = JObject.Parse(str);
+                   var result = new zabbixResult();
+                   result.id = int.Parse(jResult["id"] + "");
+                   result.jsonrpc = jResult["jsonrpc"] + "";
+                   result.result = jResult["result"];
+                   postResult.Callback?.Invoke(result);
+               });
+            return postResult;
+        }
+
+        public static void GetZabbixData(string jsonStr, Action<string> callback)
         {
             var client = CreateWebClient();
             var postUrl = ConfigurationManager.AppSettings["baseUrl"];
@@ -21,6 +68,7 @@ namespace CSharpAPIDemo
                 try
                 {
                     result = Encoding.UTF8.GetString(e.Result);
+                    callback?.Invoke(result);
                 }
                 catch (Exception exp)
                 {
@@ -38,6 +86,21 @@ namespace CSharpAPIDemo
             //webClient.Headers.Add("Content-Type", "application/json-rpc; charset=utf-8");
             return webClient;
         }
+    }
+
+    public class PostResult
+    {
+        public string method { get; set; }
+        public Action<zabbixResult> Callback { get; set; }
+    }
+
+    public class zabbixResult
+    {
+        public string jsonrpc { get; set; }
+
+        public JToken result { get; set; }
+
+        public int id { get; set; }
     }
 
     public class ZabbixWebClient : WebClient
