@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,26 @@ namespace CSharpAPIDemo
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public void Login()
+        {
+            JObject obj = new JObject();
+            obj["jsonrpc"] = "2.0";
+            obj["method"] = "user.login";
+            obj["id"] = 1;
+            obj["auth"] = null;
+
+            var objParams = new JObject();
+            objParams["user"] = "Admin";
+            objParams["password"] = "zabbix";
+            obj["params"] = objParams;
+            WebClientManager.GetData(obj + "");
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Login();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CSharpAPIDemo
 {
     public static class WebClientManager
     {
-        public static void GetData(string jsonStr, Action<string> callback)
+        public static void GetData(string jsonStr)
         {
             var client = CreateWebClient();
             var postUrl = ConfigurationManager.AppSettings["baseUrl"];
@@ -26,13 +26,8 @@ namespace CSharpAPIDemo
                 {
                     result = "Error:" + (exp.InnerException?.Message ?? exp.Message);
                 }
-                callback?.Invoke(result);
             };
-        }
-
-        private static void Client_UploadDataCompleted(object sender, UploadDataCompletedEventArgs e)
-        {
-            throw new NotImplementedException();
+            client.UploadDataAsync(new Uri(postUrl), "POST", postData);
         }
 
         static ZabbixWebClient CreateWebClient()
