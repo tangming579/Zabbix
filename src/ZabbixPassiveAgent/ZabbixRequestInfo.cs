@@ -15,7 +15,7 @@ namespace ZabbixPassiveAgent
         {
             try
             {
-                
+                Key = System.Text.Encoding.ASCII.GetString(buffer, 0, buffer.Length);
             }
             catch (Exception exp)
             {

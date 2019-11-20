@@ -22,7 +22,7 @@ namespace ZabbixPassiveAgent
     public partial class MainWindow : Window
     {
         private ZabbixServer appServer;
-        private int port = 10050;
+        private int port = 10086;
 
         public MainWindow()
         {

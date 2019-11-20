@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ZabbixPassiveAgent
 {
+    //<HEADER> - "ZBXD\x01" (5 bytes)
+    //<DATALEN> - data length(8 bytes). 1 will be formatted as 01/00/00/00/00/00/00/00 (eight bytes in HEX, 64 bit number)
+
     public class ZabbixReceiveFilter : FixedHeaderReceiveFilter<ZabbixRequestInfo>
     {
         public ZabbixReceiveFilter() : base(13)
@@ -16,9 +19,11 @@ namespace ZabbixPassiveAgent
 
         protected override int GetBodyLengthFromHeader(byte[] header, int offset, int length)
         {
-            var bodyLength = (int)header[offset + 2] * 256 + (int)header[offset + 3];
+            byte[] lengthByte = new byte[8];
+            Buffer.BlockCopy(header, offset + 5, lengthByte, 0, 8);
+            var bodyLength = BitConverter.ToInt32(lengthByte, 0);
 
-            return bodyLength * 2;
+            return bodyLength;
         }
 
         protected override ZabbixRequestInfo ResolveRequestInfo(ArraySegment<byte> header, byte[] bodyBuffer, int offset, int length)
@@ -27,7 +32,6 @@ namespace ZabbixPassiveAgent
 
             var body = bodyBuffer.Skip(offset).Take(length).ToArray();
             if (body.Length < 2) return null;
-            var isReply = body.Length == 2;
 
             var totalBuffer = new List<byte>();
             totalBuffer.AddRange(header.Array);
