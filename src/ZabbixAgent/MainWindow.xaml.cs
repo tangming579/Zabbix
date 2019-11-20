@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ZabbixAgent.Zabbix;
 
 namespace ZabbixAgent
 {
@@ -29,40 +30,14 @@ namespace ZabbixAgent
         public MainWindow()
         {
             InitializeComponent();
+
+            this.Loaded += MainWindow_Loaded;
         }
 
-        public void Connect(string ip, int port)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPAddress iPAddress = IPAddress.Parse(ip);
-            IPEndPoint point = new IPEndPoint(iPAddress, port);
-
-            Task.Run(() =>
-            {
-                while (running)
-                {
-                    if (!socket.Connected)
-                    {
-                        //socket.Connect(point);
-                        //Thread.Sleep(2000);
-                    }
-                    else
-                    {
-                        Received();
-                    }
-                }
-
-            });
+            var agent = new ZabbixActiveAgent("154.8.184.140", 10051);
+            agent.Send();
         }
-
-        protected virtual void Received()
-        {
-            while (running & socket.Connected)
-            {
-
-            }
-        }
-
-       
     }
 }
