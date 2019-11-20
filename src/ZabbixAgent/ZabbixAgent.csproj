@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8F226C4C-9E65-46AC-BD60-34C72639FCD3}</ProjectGuid>
+    <ProjectGuid>{439A2DA6-5118-4B4D-842A-2BA0223F45FD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ZabbixPassiveAgent</RootNamespace>
-    <AssemblyName>ZabbixPassiveAgent</AssemblyName>
+    <RootNamespace>ZabbixAgent</RootNamespace>
+    <AssemblyName>ZabbixAgent</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,20 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>Lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="SuperSocket.Common">
-      <HintPath>Lib\SuperSocket.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="SuperSocket.Facility">
-      <HintPath>Lib\SuperSocket.Facility.dll</HintPath>
-    </Reference>
-    <Reference Include="SuperSocket.SocketBase">
-      <HintPath>Lib\SuperSocket.SocketBase.dll</HintPath>
-    </Reference>
-    <Reference Include="SuperSocket.SocketEngine">
-      <HintPath>Lib\SuperSocket.SocketEngine.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\ZabbixWPFAgent\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -70,10 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ZabbixReceiveFilter.cs" />
-    <Compile Include="ZabbixRequestInfo.cs" />
-    <Compile Include="ZabbixServer.cs" />
-    <Compile Include="ZabbixSession.cs" />
+    <Compile Include="Zabbix\ZabbixActiveAgent.cs" />
+    <Compile Include="Zabbix\ZabbixConstants.cs" />
+    <Compile Include="Zabbix\ZabbixPassiveAgent.cs" />
+    <Compile Include="Zabbix\ZabbixProtocol.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -105,6 +93,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

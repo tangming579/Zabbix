@@ -22,7 +22,7 @@ namespace ZabbixPassiveAgent
     public partial class MainWindow : Window
     {
         private ZabbixServer appServer;
-        private int port;
+        private int port = 10050;
 
         public MainWindow()
         {
@@ -38,8 +38,8 @@ namespace ZabbixPassiveAgent
             }
             var config = new SuperSocket.SocketBase.Config.ServerConfig()
             {
-                Name = "PlcServer",
-                ServerTypeName = "PlcServer",
+                Name = "ZabbixAgent",
+                ServerTypeName = "ZabbixAgent",
                 ClearIdleSession = false, //60秒执行一次清理90秒没数据传送的连接
                 ClearIdleSessionInterval = 60,
                 IdleSessionTimeOut = 90,
