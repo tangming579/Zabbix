@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZabbixWPFAgent
+namespace ZabbixActiveAgent
 {
+    //<HEADER> - "ZBXD\x01" (5 bytes)
+    //<DATALEN> - data length(8 bytes). 1 will be formatted as 01/00/00/00/00/00/00/00 (eight bytes in HEX, 64 bit number)
+
     public class ZabbixReceiveFilter : FixedHeaderReceiveFilter<MyPackageInfo>
     {
-        public ZabbixReceiveFilter() : base(4)
+        public ZabbixReceiveFilter() : base(13)
         {
 
         }
@@ -20,13 +23,11 @@ namespace ZabbixWPFAgent
 
         public override MyPackageInfo ResolvePackage(IBufferStream bufferStream)
         {
-            //第三个参数用0,1都可以
             byte[] header = bufferStream.Buffers[0].ToArray();
             byte[] bodyBuffer = bufferStream.Buffers[1].ToArray();
             byte[] allBuffer = bufferStream.Buffers[0].Array.CloneRange(0, (int)bufferStream.Length);
-            if (allBuffer.Length < 6) return null;
-            var isReply = allBuffer.Length == 6;
-            var package = new MyPackageInfo(allBuffer, isReply);
+            if (allBuffer.Length < 13) return null;
+            var package = new MyPackageInfo(allBuffer);
             return package;
         }
 
@@ -34,9 +35,9 @@ namespace ZabbixWPFAgent
         {
             ArraySegment<byte> buffers = bufferStream.Buffers[0];
             byte[] array = buffers.ToArray();
-            int len = array[length - 2] * 256 + array[length - 1];
-            //文档中定义的长度是指一个字，实际按字节算，所以需要乘以2
-            return len * 2;
+            byte[] lengthBuffer = array.CloneRange(length - 8, length - 1);
+            int len = (int)((int)lengthBuffer[5]) + (int)(((int)lengthBuffer[6]) << 8) + (int)(((int)lengthBuffer[7]) << 16) + (int)(((int)lengthBuffer[8]) << 24);
+            return len;
         }
     }
 }

@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZabbixWPFAgent", "ZabbixWPFAgent.csproj", "{578E082F-6FB9-435B-B6AA-DEC0CFA48451}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZabbixActiveAgent", "ZabbixActiveAgent.csproj", "{578E082F-6FB9-435B-B6AA-DEC0CFA48451}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZabbixPassiveAgent", "..\ZabbixPassiveAgent\ZabbixPassiveAgent.csproj", "{8F226C4C-9E65-46AC-BD60-34C72639FCD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{578E082F-6FB9-435B-B6AA-DEC0CFA48451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{578E082F-6FB9-435B-B6AA-DEC0CFA48451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{578E082F-6FB9-435B-B6AA-DEC0CFA48451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F226C4C-9E65-46AC-BD60-34C72639FCD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F226C4C-9E65-46AC-BD60-34C72639FCD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F226C4C-9E65-46AC-BD60-34C72639FCD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F226C4C-9E65-46AC-BD60-34C72639FCD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
