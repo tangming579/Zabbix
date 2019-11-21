@@ -1,4 +1,5 @@
-﻿using SuperSocket.SocketBase.Protocol;
+﻿using Newtonsoft.Json.Linq;
+using SuperSocket.SocketBase.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,14 @@ namespace ZabbixPassiveAgent
     public class ZabbixRequestInfo : IRequestInfo
     {
         public string Key { get; set; }
+        public JToken JData { get; set; }
 
         public ZabbixRequestInfo(byte[] buffer)
         {
             try
             {
                 Key = System.Text.Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+                
             }
             catch (Exception exp)
             {

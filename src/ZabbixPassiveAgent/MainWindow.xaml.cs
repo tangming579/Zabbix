@@ -1,4 +1,5 @@
-﻿using SuperSocket.SocketBase;
+﻿using Newtonsoft.Json.Linq;
+using SuperSocket.SocketBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ZabbixCore;
 
 namespace ZabbixPassiveAgent
 {
@@ -61,7 +63,15 @@ namespace ZabbixPassiveAgent
         //接收客户端消息
         private void App_NewRequestReceived(ZabbixSession session, ZabbixRequestInfo requestInfo)
         {
+            if (appServer != null && appServer.State == ServerState.Running&&appServer.SessionCount>0)
+            {
+                JObject obj = new JObject();
+                obj["request"] = "active checks";
+                obj["host"] = "Dell Laptop";
+                string strSend = obj + "";
 
+                var data = ZabbixProtocol.WriteWithHeader(strSend);
+            }
         }
         //客户端连接
         void app_NewSessionConnected(ZabbixSession session)

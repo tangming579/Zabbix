@@ -7,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZabbixAgent.Zabbix
+namespace ZabbixCore
 {
     //https://www.zabbix.com/documentation/3.4/zh/manual/appendix/items/activepassive
     public class ZabbixActiveAgent
