@@ -59,18 +59,48 @@ namespace ZabbixPassiveAgent
             }
             appServer.Start();
         }
-
+        Random random = new Random();
+        DateTime oldValue = DateTime.Now;
         //接收客户端消息
         private void App_NewRequestReceived(ZabbixSession session, ZabbixRequestInfo requestInfo)
         {
-            if (appServer != null && appServer.State == ServerState.Running&&appServer.SessionCount>0)
+            if (appServer != null && appServer.State == ServerState.Running && appServer.SessionCount > 0)
             {
-                JObject obj = new JObject();
-                obj["request"] = "active checks";
-                obj["host"] = "Dell Laptop";
-                string strSend = obj + "";
 
-                var data = ZabbixProtocol.WriteWithHeader(strSend);
+                Console.WriteLine($"收到：{requestInfo.Key}, Time:{DateTime.Now:HH:mm:ss}");
+
+                switch (requestInfo.Key)
+                {
+                    case "Name":
+                        {
+                            var data = ZabbixProtocol.WriteWithHeader("Tang Ming");
+                            session.Send(data, 0, data.Length);
+                        }
+                        break;
+                    case "Percent":
+                        {
+                            var data = ZabbixProtocol.WriteWithHeader("70");
+                            session.Send(data, 0, data.Length);
+                        }
+                        break;
+                    case "CPU":
+                        {
+                            var span = (DateTime.Now - oldValue).TotalSeconds;
+                            oldValue = DateTime.Now;
+                            Console.WriteLine(span);
+                            var value = random.Next(30, 90) + "";
+                            var data = ZabbixProtocol.WriteWithHeader(value);
+                            session.Send(data, 0, data.Length);
+                        }
+                        break;
+                    case "Detail":
+                        {
+
+                            var data = ZabbixProtocol.WriteWithHeader("Hello World!");
+                            session.Send(data, 0, data.Length);
+                        }
+                        break;
+                }
             }
         }
         //客户端连接
