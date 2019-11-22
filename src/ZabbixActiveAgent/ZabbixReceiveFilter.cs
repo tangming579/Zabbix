@@ -23,8 +23,6 @@ namespace ZabbixActiveAgent
 
         public override MyPackageInfo ResolvePackage(IBufferStream bufferStream)
         {
-            byte[] header = bufferStream.Buffers[0].ToArray();
-            byte[] bodyBuffer = bufferStream.Buffers[1].ToArray();
             byte[] allBuffer = bufferStream.Buffers[0].Array.CloneRange(0, (int)bufferStream.Length);
             if (allBuffer.Length < 13) return null;
             var package = new MyPackageInfo(allBuffer);
@@ -35,9 +33,12 @@ namespace ZabbixActiveAgent
         {
             ArraySegment<byte> buffers = bufferStream.Buffers[0];
             byte[] array = buffers.ToArray();
-            byte[] lengthBuffer = array.CloneRange(length - 8, length - 1);
-            int len = (int)((int)lengthBuffer[5]) + (int)(((int)lengthBuffer[6]) << 8) + (int)(((int)lengthBuffer[7]) << 16) + (int)(((int)lengthBuffer[8]) << 24);
-            return len;
+            byte[] lengthBuffer = new byte[8];
+
+            Buffer.BlockCopy(array, 5, lengthBuffer, 0, 8);
+            var bodyLength = BitConverter.ToInt32(lengthBuffer, 0);
+
+            return bodyLength;
         }
     }
 }
