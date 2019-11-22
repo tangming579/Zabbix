@@ -51,12 +51,12 @@ namespace CSharpAPIDemo
 
             WebClientManager.GetZabbixData(zabbixParam);
         }
-        //检索主机
+        //检索主机,参考：https://www.zabbix.com/documentation/3.4/manual/api/reference/host/get
         private void BtnGetHost_Click(object sender, RoutedEventArgs e)
         {
             var objParams = new JObject();
             var output = new JArray() { "hostid", "host" };
-            var selectInterfaces = new JArray() { "interfaceid", "ip" };
+            var selectInterfaces = new JArray() { "interfaceid", "ip","port" };
 
             objParams["output"] = output;
             objParams["selectInterfaces"] = selectInterfaces;
@@ -86,7 +86,7 @@ namespace CSharpAPIDemo
             //  3 - numeric unsigned; 数字符号
             //  4 - text.文本
 
-            objParams["itemids"] = "23296";
+            objParams["itemids"] = "10084";
             objParams["sortfield"] = "clock";//按什么排序，可能的值为：itemid和clock
             objParams["sortorder"] = "DESC";
             objParams["limit"] = 10;
@@ -110,7 +110,7 @@ namespace CSharpAPIDemo
             search["name"] = "Context switches per second";
 
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["hostids"] = "10269";
+            objParams["hostids"] = "10265";
             objParams["search"] = search;
             objParams["sortfield"] = "name";//按什么排序
 
@@ -129,7 +129,7 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["hostids"] = "10269";
+            objParams["hostids"] = "10265";
 
             ZabbixParam zabbixParam = new ZabbixParam();
             zabbixParam.method = "problem.get";
@@ -146,7 +146,7 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["hostids"] = "10269";
+            objParams["hostids"] = "10265";
 
             ZabbixParam zabbixParam = new ZabbixParam();
             zabbixParam.method = "alert.get";

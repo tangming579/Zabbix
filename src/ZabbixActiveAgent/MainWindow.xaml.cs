@@ -87,7 +87,7 @@ namespace ZabbixActiveAgent
                             JObject dataObj = new JObject();
                             dataObj["key"] = da["key"] + "";
                             dataObj["host"] = "Dell Laptop";
-                            dataObj["value"] = "48";
+                            dataObj["value"] = "98";
                             //dataObj["clock"] = DateTime.Now.Ticks;
                             dataObj["ns"] = 76808644;
                             jArray.Add(dataObj);
