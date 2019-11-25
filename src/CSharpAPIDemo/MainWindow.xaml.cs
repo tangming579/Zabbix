@@ -26,6 +26,8 @@ namespace CSharpAPIDemo
             InitializeComponent();
         }
 
+        public string SelectedHostId { get; set; }
+
         //登录
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
@@ -39,11 +41,11 @@ namespace CSharpAPIDemo
             zabbixParam.Callback = (result) =>
             {
                 txbResult.Text = result.resultTotal + "";
-                WebClientManager.Token = result.result + "";
-                if (string.IsNullOrEmpty(WebClientManager.Token))
+                if (string.IsNullOrEmpty(result.result + ""))
                     MessageBox.Show("登录失败！");
                 else
                 {
+                    WebClientManager.Token = result.result + "";
                     btnLogin.Content = "已登录";
                     staCtl.IsEnabled = true;
                 }
@@ -56,7 +58,7 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             var output = new JArray() { "hostid", "host" };
-            var selectInterfaces = new JArray() { "interfaceid", "ip","port" };
+            var selectInterfaces = new JArray() { "interfaceid", "ip", "port" };
 
             objParams["output"] = output;
             objParams["selectInterfaces"] = selectInterfaces;
@@ -67,6 +69,8 @@ namespace CSharpAPIDemo
             zabbixParam.Callback = (result) =>
             {
                 txbResult.Text = result.resultTotal + "";
+                var results = result.resultTotal["result"] as JArray;
+                lstHosts.DataContext = results;
             };
 
             WebClientManager.GetZabbixData(zabbixParam);
@@ -86,7 +90,7 @@ namespace CSharpAPIDemo
             //  3 - numeric unsigned; 数字符号
             //  4 - text.文本
 
-            objParams["itemids"] = "10084";
+            objParams["itemids"] = SelectedHostId;
             objParams["sortfield"] = "clock";//按什么排序，可能的值为：itemid和clock
             objParams["sortorder"] = "DESC";
             objParams["limit"] = 10;
@@ -110,7 +114,7 @@ namespace CSharpAPIDemo
             search["name"] = "Context switches per second";
 
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["hostids"] = "10265";
+            objParams["hostids"] = SelectedHostId;
             objParams["search"] = search;
             objParams["sortfield"] = "name";//按什么排序
 
@@ -129,7 +133,7 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["hostids"] = "10265";
+            objParams["hostids"] = SelectedHostId;
 
             ZabbixParam zabbixParam = new ZabbixParam();
             zabbixParam.method = "problem.get";
@@ -146,7 +150,7 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["hostids"] = "10265";
+            objParams["hostids"] = SelectedHostId;
 
             ZabbixParam zabbixParam = new ZabbixParam();
             zabbixParam.method = "alert.get";
@@ -157,6 +161,12 @@ namespace CSharpAPIDemo
             };
 
             WebClientManager.GetZabbixData(zabbixParam);
+        }
+
+        private void LstHosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var jObj = lstHosts.SelectedItem as JObject;
+            SelectedHostId = jObj["hostid"] + "";
         }
     }
 }
