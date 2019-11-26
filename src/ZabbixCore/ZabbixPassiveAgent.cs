@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZabbixCore
 {
+    //https://www.zabbix.com/documentation/4.0/zh/manual/appendix/items/activepassive
     public class ZabbixPassiveAgent
     {
         private IPAddress ip;

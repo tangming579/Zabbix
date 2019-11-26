@@ -7,24 +7,25 @@ using System.Threading.Tasks;
 
 namespace ZabbixCore
 {
+    //https://www.zabbix.com/documentation/4.0/zh/manual/appendix/items/activepassive
     public class ZabbixProtocol
     {
-        public static byte[] WriteWithHeader(string data)
+        public static byte[] WriteWithHeader(string sendData)
         {
-            byte[] Header = Encoding.ASCII.GetBytes(ZabbixConstants.HeaderString);
-            byte[] DataLen = BitConverter.GetBytes((long)data.Length);
-            byte[] Content = Encoding.ASCII.GetBytes(data);
-            byte[] Message = new byte[Header.Length + DataLen.Length + Content.Length];
-            Buffer.BlockCopy(Header, 0, Message, 0, Header.Length);
-            Buffer.BlockCopy(DataLen, 0, Message, Header.Length, DataLen.Length);
-            Buffer.BlockCopy(Content, 0, Message, Header.Length + DataLen.Length, Content.Length);
+            byte[] header = Encoding.ASCII.GetBytes(ZabbixConstants.HeaderString);
+            byte[] dataLen = BitConverter.GetBytes((long)sendData.Length);
+            byte[] data = Encoding.ASCII.GetBytes(sendData);
+            byte[] totalMessage = new byte[header.Length + dataLen.Length + data.Length];
+            Buffer.BlockCopy(header, 0, totalMessage, 0, header.Length);
+            Buffer.BlockCopy(dataLen, 0, totalMessage, header.Length, dataLen.Length);
+            Buffer.BlockCopy(data, 0, totalMessage, header.Length + dataLen.Length, data.Length);
 
-            return Message;
+            return totalMessage;
         }
 
-        public static byte[] WriteWithHeader(JToken data)
+        public static byte[] WriteWithHeader(JToken sendData)
         {
-            return WriteWithHeader(data + "");
+            return WriteWithHeader(sendData + "");
         }
     }
 }

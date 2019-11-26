@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ZabbixCore
 {
-    //https://www.zabbix.com/documentation/3.4/zh/manual/appendix/items/activepassive
+    //https://www.zabbix.com/documentation/4.0/zh/manual/appendix/items/activepassive
     public class ZabbixActiveAgent
     {
         private IPAddress ip;

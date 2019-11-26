@@ -100,6 +100,11 @@ namespace ZabbixPassiveAgent
                             session.Send(data, 0, data.Length);
                         }
                         break;
+                    default:
+                        {
+                            var data = ZabbixProtocol.WriteWithHeader("ZBX_NOTSUPPORTED\0Cannot find the item key");
+                        }
+                        break;
                 }
             }
         }
