@@ -13,9 +13,9 @@ namespace ZabbixCore
     {
         public static byte[] WriteWithHeader(string sendData)
         {
-            byte[] header = Encoding.ASCII.GetBytes(ZabbixConstants.HeaderString);
+            byte[] header = Encoding.UTF8.GetBytes(ZabbixConstants.HeaderString);
             byte[] dataLen = BitConverter.GetBytes((long)sendData.Length);
-            byte[] data = Encoding.ASCII.GetBytes(sendData);
+            byte[] data = Encoding.UTF8.GetBytes(sendData);
             byte[] totalMessage = new byte[header.Length + dataLen.Length + data.Length];
             Buffer.BlockCopy(header, 0, totalMessage, 0, header.Length);
             Buffer.BlockCopy(dataLen, 0, totalMessage, header.Length, dataLen.Length);

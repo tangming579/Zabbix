@@ -69,42 +69,55 @@ namespace ZabbixPassiveAgent
 
                 Console.WriteLine($"收到：{requestInfo.Key}, Time:{DateTime.Now:HH:mm:ss}");
 
-                switch (requestInfo.Key)
+                if (requestInfo.IsDiscovery)
                 {
-                    case "Name":
-                        {
-                            var data = ZabbixProtocol.WriteWithHeader("Tang Ming");
-                            session.Send(data, 0, data.Length);
-                        }
-                        break;
-                    case "Percent":
-                        {
-                            var data = ZabbixProtocol.WriteWithHeader("70");
-                            session.Send(data, 0, data.Length);
-                        }
-                        break;
-                    case "CPU":
-                        {
-                            var span = (DateTime.Now - oldValue).TotalSeconds;
-                            oldValue = DateTime.Now;
-                            Console.WriteLine(span);
-                            var value = random.Next(30, 90) + "";
-                            var data = ZabbixProtocol.WriteWithHeader(value);
-                            session.Send(data, 0, data.Length);
-                        }
-                        break;
-                    case "Detail":
-                        {
 
-                            var data = ZabbixProtocol.WriteWithHeader("Hello World!");
-                            session.Send(data, 0, data.Length);
-                        }
-                        break;
-                    default:
-                        {
-                            var data = ZabbixProtocol.WriteWithHeader("ZBX_NOTSUPPORTED\0Cannot find the item key");
-                        }
-                        break;
+                }
+                else
+                {
+                    switch (requestInfo.Key)
+                    {
+                        case "agent.ping":
+                            {
+                                var data = ZabbixProtocol.WriteWithHeader("1");
+                                session.Send(data, 0, data.Length);
+                            }
+                            break;
+                        case "Name":
+                            {
+                                var data = ZabbixProtocol.WriteWithHeader("Tang Ming");
+                                session.Send(data, 0, data.Length);
+                            }
+                            break;
+                        case "Percent":
+                            {
+                                var data = ZabbixProtocol.WriteWithHeader("70");
+                                session.Send(data, 0, data.Length);
+                            }
+                            break;
+                        case "CPU":
+                            {
+                                var span = (DateTime.Now - oldValue).TotalSeconds;
+                                oldValue = DateTime.Now;
+                                Console.WriteLine(span);
+                                var value = random.Next(30, 90) + "";
+                                var data = ZabbixProtocol.WriteWithHeader(value);
+                                session.Send(data, 0, data.Length);
+                            }
+                            break;
+                        case "Detail":
+                            {
+
+                                var data = ZabbixProtocol.WriteWithHeader("Hello World!");
+                                session.Send(data, 0, data.Length);
+                            }
+                            break;
+                        default:
+                            {
+                                var data = ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
+                            }
+                            break;
+                    }
                 }
             }
         }
