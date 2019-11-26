@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace ZabbixCore
 {
     //https://www.zabbix.com/documentation/4.0/zh/manual/appendix/items/activepassive
+    //key, delay, lastlogsize and mtime must exist
     public class ZabbixActiveAgent
     {
         private IPAddress ip;

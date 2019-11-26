@@ -22,7 +22,6 @@ namespace ZabbixPassiveAgent
             byte[] lengthByte = new byte[8];
             Buffer.BlockCopy(header, offset + 5, lengthByte, 0, 8);
             var bodyLength = BitConverter.ToInt32(lengthByte, 0);
-
             return bodyLength;
         }
 
@@ -31,8 +30,6 @@ namespace ZabbixPassiveAgent
             if (bodyBuffer == null) return null;
 
             var body = bodyBuffer.Skip(offset).Take(length).ToArray();
-            if (body.Length < 2) return null;
-
             var totalBuffer = new List<byte>();
             totalBuffer.AddRange(header.Array);
             totalBuffer.AddRange(body);

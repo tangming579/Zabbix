@@ -12,15 +12,19 @@ namespace ZabbixPassiveAgent
     {
         public string Key { get; set; }
         public string Message { get; set; }
+        public JToken JData { get; set; }
+        public bool Response { get; private set; }
 
         public ZabbixRequestInfo(byte[] buffer)
         {
             try
             {
-                Message = System.Text.Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+                Message = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
                 byte[] data = new byte[buffer.Length - 13];
                 Buffer.BlockCopy(buffer, 13, data, 0, data.Length);
-                Key = System.Text.Encoding.ASCII.GetString(data, 0, data.Length);
+                Key = Encoding.ASCII.GetString(data, 0, data.Length);
+                JData = JObject.Parse(Key);
+                Response = string.Equals(JData.SelectToken("response") + "", "success", StringComparison.CurrentCultureIgnoreCase);
             }
             catch (Exception exp)
             {

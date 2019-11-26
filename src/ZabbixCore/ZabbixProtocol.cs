@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ZabbixCore
 {
-    //https://www.zabbix.com/documentation/4.0/zh/manual/appendix/items/activepassive
+    //参考：https://www.zabbix.com/documentation/4.0/zh/manual/appendix/items/activepassive
+    //更多细节：https://www.zabbix.org/wiki/Docs/protocols/zabbix_agent/3.0
     public class ZabbixProtocol
     {
         public static byte[] WriteWithHeader(string sendData)
