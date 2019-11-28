@@ -79,63 +79,100 @@ namespace ZabbixPassiveAgent
                         break;
                     case "device.discovery":
                         {
-                            var data = ZabbixProtocol.WriteWithHeader("1");
+                            var data = HandleDeviceDiscovery();
                             session.Send(data, 0, data.Length);
                         }
                         break;
                     case "station.discovery":
                         {
-                            var data = ZabbixProtocol.WriteWithHeader("1");
+                            var data = HandleStationDiscovery();
                             session.Send(data, 0, data.Length);
                         }
                         break;
                     default:
                         {
-                            var data = SendItemValue(requestInfo.Key);
+                            var data = HandleItemValue(requestInfo.Key);
+                            session.Send(data, 0, data.Length);
                         }
                         break;
                 }
             }
         }
 
-        private byte[] SendDiscovery()
+        private byte[] HandleDeviceDiscovery()
         {
+            var jDevice = new JObject();
+            var datas = new JArray();
+            for (int i = 0; i < 5; i++)
+            {
+                var data = new JObject();
+                data["{#NAME}"] = "Device" + i;
+                datas.Add(data);
+            }
+            jDevice["data"] = datas;
 
+            return ZabbixProtocol.WriteWithHeader(jDevice);
         }
-        private byte[] SendItemValue(string itemKey)
+
+        private byte[] HandleStationDiscovery()
+        {
+            var jDevice = new JObject();
+            var datas = new JArray();
+            for (int i = 0; i < 3; i++)
+            {
+                var data = new JObject();
+                data["{#NAME}"] = "Station" + i;
+                datas.Add(data);
+            }
+            jDevice["data"] = datas;
+
+            return ZabbixProtocol.WriteWithHeader(jDevice);
+        }
+
+        private byte[] HandleItemValue(string itemKey)
         {
             switch (itemKey)
-            {                
+            {
                 case "Name":
                     {
-                        var data = ZabbixProtocol.WriteWithHeader("Tang Ming");                        
+                        return ZabbixProtocol.WriteWithHeader("Tang Ming");
                     }
-                    break;
                 case "Percent":
                     {
-                        var data = ZabbixProtocol.WriteWithHeader("70");                        
+                        return ZabbixProtocol.WriteWithHeader("70");
                     }
-                    break;
                 case "CPU":
                     {
                         var span = (DateTime.Now - oldValue).TotalSeconds;
                         oldValue = DateTime.Now;
                         Console.WriteLine(span);
                         var value = random.Next(30, 90) + "";
-                        var data = ZabbixProtocol.WriteWithHeader(value);                        
+                        return ZabbixProtocol.WriteWithHeader(value);
                     }
-                    break;
                 case "Detail":
                     {
 
-                        var data = ZabbixProtocol.WriteWithHeader("Hello World!");                        
+                        return ZabbixProtocol.WriteWithHeader("Hello World!");
                     }
-                    break;
+                case "station.discovery.station1":
+                    {
+
+                        return ZabbixProtocol.WriteWithHeader("66");
+                    }
+                case "device.ip.device2":
+                    {
+
+                        return ZabbixProtocol.WriteWithHeader("CT2080");
+                    }
+                case "device.status.device2":
+                    {
+
+                        return ZabbixProtocol.WriteWithHeader("88");
+                    }
                 default:
                     {
-                        var data = ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
+                        return ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
                     }
-                    break;
             }
         }
 
