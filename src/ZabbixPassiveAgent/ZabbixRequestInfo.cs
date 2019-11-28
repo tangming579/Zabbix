@@ -14,7 +14,6 @@ namespace ZabbixPassiveAgent
         public string Message { get; set; }
         public JToken JData { get; set; }
         public bool Response { get; private set; }
-        public bool IsDiscovery { get; private set; }
 
         public ZabbixRequestInfo(byte[] buffer)
         {
@@ -24,9 +23,9 @@ namespace ZabbixPassiveAgent
                 byte[] data = new byte[buffer.Length - 13];
                 Buffer.BlockCopy(buffer, 13, data, 0, data.Length);
                 Key = Encoding.UTF8.GetString(data, 0, data.Length);
-                JData = JObject.Parse(Key);
-                Response = string.Equals(JData.SelectToken("response") + "", "success", StringComparison.CurrentCultureIgnoreCase);
-                IsDiscovery = Key.Contains("discovery");
+                //JData = JObject.Parse(Key);
+                //Response = string.Equals(JData.SelectToken("response") + "", "success", StringComparison.CurrentCultureIgnoreCase);
+                //IsDiscovery = Key.Contains("discovery");
             }
             catch (Exception exp)
             {
