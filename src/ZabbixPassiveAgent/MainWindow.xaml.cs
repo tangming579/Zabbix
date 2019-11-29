@@ -106,7 +106,7 @@ namespace ZabbixPassiveAgent
             for (int i = 0; i < 5; i++)
             {
                 var data = new JObject();
-                data["{#NAME}"] = "Device" + i;
+                data["{#NAME}"] = "device" + i;
                 datas.Add(data);
             }
             jDevice["data"] = datas;
@@ -121,7 +121,7 @@ namespace ZabbixPassiveAgent
             for (int i = 0; i < 3; i++)
             {
                 var data = new JObject();
-                data["{#NAME}"] = "Station" + i;
+                data["{#NAME}"] = "station" + i;
                 datas.Add(data);
             }
             jDevice["data"] = datas;
@@ -154,17 +154,17 @@ namespace ZabbixPassiveAgent
 
                         return ZabbixProtocol.WriteWithHeader("Hello World!");
                     }
-                case "station.discovery.station1":
+                case "station.discovery.[station1]":
                     {
 
                         return ZabbixProtocol.WriteWithHeader("66");
                     }
-                case "device.ip.device2":
+                case "device.ip.[device2]":
                     {
 
                         return ZabbixProtocol.WriteWithHeader("CT2080");
                     }
-                case "device.status.device2":
+                case "device.status.[device2]":
                     {
 
                         return ZabbixProtocol.WriteWithHeader("88");
