@@ -164,7 +164,6 @@ namespace ZabbixPassiveAgent
                         else
                             return ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
                     }
-                    break;
             }
         }
 
@@ -173,7 +172,23 @@ namespace ZabbixPassiveAgent
             int index1 = itemKey.IndexOf('[');
             int index2 = itemKey.IndexOf(']');
             string dicKey = itemKey.Substring(index1 + 1, index2 - index1 - 1);
-            return ZabbixProtocol.WriteWithHeader($"Device");
+            if (itemKey.Contains(".ip"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"192.168.100.1");
+            }
+            else if (itemKey.Contains(".name"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"deviceName");
+            }
+            else if (itemKey.Contains(".state"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"1");
+            }
+            else if (itemKey.Contains(".errormessage"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"None");
+            }
+            return ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
         }
 
         public byte[] GetStationValue(string itemKey)
@@ -181,7 +196,23 @@ namespace ZabbixPassiveAgent
             int index1 = itemKey.IndexOf('[');
             int index2 = itemKey.IndexOf(']');
             string dicKey = itemKey.Substring(index1 + 1, index2 - index1 - 1);
-            return ZabbixProtocol.WriteWithHeader($"Station");
+            if (itemKey.Contains(".ip"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"192.168.100.1");
+            }
+            else if (itemKey.Contains(".name"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"stationName");
+            }
+            else if (itemKey.Contains(".state"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"1");
+            }
+            else if (itemKey.Contains(".errormessage"))
+            {
+                return ZabbixProtocol.WriteWithHeader($"None");
+            }
+            return ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
         }
 
         //客户端连接
