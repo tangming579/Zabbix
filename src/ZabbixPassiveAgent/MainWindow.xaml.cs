@@ -154,15 +154,15 @@ namespace ZabbixPassiveAgent
 
                         return ZabbixProtocol.WriteWithHeader("Hello World!");
                     }
-                case "station.discovery.[station1]":
+                case "station.ip.[station1]":
                     {
 
-                        return ZabbixProtocol.WriteWithHeader("66");
+                        return ZabbixProtocol.WriteWithHeader("Recheck");
                     }
                 case "device.ip.[device2]":
                     {
 
-                        return ZabbixProtocol.WriteWithHeader("CT2080");
+                        return ZabbixProtocol.WriteWithHeader("Device2");
                     }
                 case "device.status.[device2]":
                     {
@@ -174,6 +174,18 @@ namespace ZabbixPassiveAgent
                         return ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
                     }
             }
+        }
+
+        public void GetDeviceValue(string itemKey)
+        {
+            int index1 = itemKey.IndexOf('[');
+            int index2 = itemKey.IndexOf(']');
+            string dicKey = itemKey.Substring(index1 + 1, index2 - index1 - 1);
+        }
+
+        public void GetStationValue()
+        {
+
         }
 
         //客户端连接
