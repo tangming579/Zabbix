@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -154,38 +155,33 @@ namespace ZabbixPassiveAgent
 
                         return ZabbixProtocol.WriteWithHeader("Hello World!");
                     }
-                case "station.ip.[station1]":
-                    {
-
-                        return ZabbixProtocol.WriteWithHeader("Recheck");
-                    }
-                case "device.ip.[device2]":
-                    {
-
-                        return ZabbixProtocol.WriteWithHeader("Device2");
-                    }
-                case "device.status.[device2]":
-                    {
-
-                        return ZabbixProtocol.WriteWithHeader("88");
-                    }
                 default:
                     {
-                        return ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
+                        if (itemKey.Contains("station"))
+                            return GetStationValue(itemKey);
+                        else if (itemKey.Contains("device"))
+                            return GetDeviceValue(itemKey);
+                        else
+                            return ZabbixProtocol.WriteWithHeader($"{ZabbixConstants.NotSupported}\0Cannot find the item key");
                     }
+                    break;
             }
         }
 
-        public void GetDeviceValue(string itemKey)
+        public byte[] GetDeviceValue(string itemKey)
         {
             int index1 = itemKey.IndexOf('[');
             int index2 = itemKey.IndexOf(']');
             string dicKey = itemKey.Substring(index1 + 1, index2 - index1 - 1);
+            return ZabbixProtocol.WriteWithHeader($"Device");
         }
 
-        public void GetStationValue()
+        public byte[] GetStationValue(string itemKey)
         {
-
+            int index1 = itemKey.IndexOf('[');
+            int index2 = itemKey.IndexOf(']');
+            string dicKey = itemKey.Substring(index1 + 1, index2 - index1 - 1);
+            return ZabbixProtocol.WriteWithHeader($"Station");
         }
 
         //客户端连接
