@@ -27,6 +27,7 @@
             <Button x:Name="btnGetProblem" Content="获取异常数据" HorizontalAlignment="Left" Margin="0,25,0,0" VerticalAlignment="Top" Width="95" Click="BtnGetProblem_Click"/>
             <Button x:Name="btnGetAlert" Content="获取告警数据" HorizontalAlignment="Left" Margin="0,25,0,0" VerticalAlignment="Top" Width="95" Click="BtnGetAlert_Click"/>
             <Button x:Name="btnCreateHost" Content="创建主机" HorizontalAlignment="Left" Margin="0,25,0,0" VerticalAlignment="Top" Width="95" Click="BtnGetAlert_Click"/>
+            <Button x:Name="btnt" Content="创建主机" HorizontalAlignment="Left" Margin="0,25,0,0" VerticalAlignment="Top" Width="95" Click="BtnGetAlert_Click"/>
         </StackPanel>
         <ListBox x:Name="lstHosts" SelectionChanged="LstHosts_SelectionChanged" ItemsSource="{Binding}" DisplayMemberPath="host" HorizontalAlignment="Left" Height="307" Margin="134,102,0,0" VerticalAlignment="Top" Width="191"/>
 

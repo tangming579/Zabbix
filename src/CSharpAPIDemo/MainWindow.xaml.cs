@@ -82,7 +82,7 @@ namespace CSharpAPIDemo
             var objParams = new JObject();
 
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["history"] = 0;
+            objParams["history"] = 2;
             //要返回的历史对象类型
             //  0 - numeric float; 数字浮点数
             //  1 - character; 字符
@@ -90,7 +90,7 @@ namespace CSharpAPIDemo
             //  3 - numeric unsigned; 数字符号
             //  4 - text.文本
 
-            objParams["itemids"] = SelectedHostId;
+            objParams["itemids"] = "29585";
             objParams["sortfield"] = "clock";//按什么排序，可能的值为：itemid和clock
             objParams["sortorder"] = "DESC";
             objParams["limit"] = 10;
@@ -115,7 +115,7 @@ namespace CSharpAPIDemo
 
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
             objParams["hostids"] = SelectedHostId;
-            objParams["search"] = search;
+            //objParams["search"] = search;
             objParams["sortfield"] = "name";//按什么排序
 
             ZabbixParam zabbixParam = new ZabbixParam();
