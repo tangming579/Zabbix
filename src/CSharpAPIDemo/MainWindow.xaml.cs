@@ -60,7 +60,7 @@ namespace CSharpAPIDemo
             var output = new JArray() { "hostid", "host" };
             var selectInterfaces = new JArray() { "interfaceid", "ip", "port" };
 
-            objParams["output"] = output;
+            objParams["output"] = "extend";
             objParams["selectInterfaces"] = selectInterfaces;
 
             ZabbixParam zabbixParam = new ZabbixParam();
@@ -133,7 +133,12 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
-            objParams["hostids"] = SelectedHostId;
+            //objParams["hostids"] = SelectedHostId;
+            //objParams["selectHosts"] = new JArray() { "hostgroup" };
+
+            //var output = new JArray();
+            //output.Add("name");
+            //objParams["output"] = output;
 
             ZabbixParam zabbixParam = new ZabbixParam();
             zabbixParam.method = "problem.get";
@@ -167,6 +172,39 @@ namespace CSharpAPIDemo
         {
             var jObj = lstHosts.SelectedItem as JObject;
             SelectedHostId = jObj["hostid"] + "";
+        }
+
+        private void btnTrigger_Click(object sender, RoutedEventArgs e)
+        {
+            var objParams = new JObject();
+            objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+            objParams["selectHosts"] = new JArray() { "host" };
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "trigger.get";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.resultTotal + "";
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
+        }
+
+        private void btnEvent_Click(object sender, RoutedEventArgs e)
+        {
+            var objParams = new JObject();
+            objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+
+            ZabbixParam zabbixParam = new ZabbixParam();
+            zabbixParam.method = "event.get";
+            zabbixParam.jParams = objParams;
+            zabbixParam.Callback = (result) =>
+            {
+                txbResult.Text = result.resultTotal + "";
+            };
+
+            WebClientManager.GetZabbixData(zabbixParam);
         }
     }
 }
