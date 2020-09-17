@@ -195,6 +195,7 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+            objParams["time_from"] = DateTime.Today.GetTimeStamp();
 
             ZabbixParam zabbixParam = new ZabbixParam();
             zabbixParam.method = "event.get";
