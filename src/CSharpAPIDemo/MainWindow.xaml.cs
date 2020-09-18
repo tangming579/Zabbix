@@ -133,6 +133,9 @@ namespace CSharpAPIDemo
         {
             var objParams = new JObject();
             objParams["output"] = "extend";//要返回的对象属性，可能的值: extend.
+            objParams["recent"] = "true";
+            objParams["time_from"] = DateTime.Today.GetTimeStamp();
+            objParams["limit"] = 100;
             //objParams["hostids"] = SelectedHostId;
             //objParams["selectHosts"] = new JArray() { "hostgroup" };
 
@@ -145,6 +148,7 @@ namespace CSharpAPIDemo
             zabbixParam.jParams = objParams;
             zabbixParam.Callback = (result) =>
             {
+                var res = result.resultTotal["result"] as JArray;
                 txbResult.Text = result.resultTotal + "";
             };
 
